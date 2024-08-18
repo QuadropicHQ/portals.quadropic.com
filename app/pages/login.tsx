@@ -15,8 +15,11 @@ import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CardWrapper from "../components/cardwrapper";
+import CardWrapper from "../sore/cardwrapper";
 import { LoginSchema } from "../schema";
+import { FaKey } from "react-icons/fa";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { startRegistration } from "@simplewebauthn/browser";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +27,6 @@ const LoginForm = () => {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
@@ -53,8 +55,8 @@ const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      type="Portals User"
-                      placeholder="alexf1"
+                      type="email"
+                      placeholder="alex@quadropic.com"
                     />
                   </FormControl>
                   <FormMessage />
@@ -62,9 +64,27 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-fit px-4" disabled={pending}>
-            {loading ? "Loading..." : "Login"}
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              className="w-fit px-4"
+              disabled={pending || loading}
+              onClick={() => {
+                setLoading(true);
+              }}
+            >
+              {loading ? (
+                <div className="flex-row flex">
+                  Getting it Ready
+                  <ReloadIcon className="ml-2 h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                <div className="flex-row flex">
+                  Use Passkeys <FaKey className="ml-2" />
+                </div>
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </CardWrapper>
